@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
       <div className="flex flex-col gap-5 w-full py-4">
         <div className="flex">
           <Input
-            placeholder={`Filter ${searchKey}s ...`}
+            placeholder={`Search ${searchKey}s ...`}
             value={
               (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
             }

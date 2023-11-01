@@ -27,6 +27,7 @@ export const appRouter = router({
       z.object({
         title: z.string(),
         dueDate: z.string(),
+        description: z.string(),
         priority: z.enum([Priority.Low, Priority.Medium, Priority.High]),
       })
     )
@@ -36,8 +37,45 @@ export const appRouter = router({
       await prisma.task.create({
         data: {
           userId: ctx.userId,
+          description: input.description,
           title: input.title,
           dueDate: input.dueDate,
+          priority: input.priority,
+        },
+      });
+      return true;
+    }),
+
+  editTask: privateProcedure
+    .input(
+      z.object({
+        taskId: z.string(),
+        title: z.string(),
+        dueDate: z.string(),
+        description: z.string(),
+        status: z.enum([
+          Status.Pending,
+          Status.InProgress,
+          Status.Complete,
+          Status.Cancelled,
+        ]),
+        priority: z.enum([Priority.Low, Priority.Medium, Priority.High]),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // console.log(input);
+
+      await prisma.task.update({
+        where: {
+          userId: ctx.userId,
+          id: input.taskId,
+        },
+        data: {
+          userId: ctx.userId,
+          description: input.description,
+          title: input.title,
+          dueDate: input.dueDate,
+          status: input.status,
           priority: input.priority,
         },
       });
@@ -55,6 +93,23 @@ export const appRouter = router({
     });
     return tasks || null;
   }),
+
+  getTask: privateProcedure
+    .input(
+      z.object({
+        taskId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const task = await prisma.task.findUnique({
+        where: {
+          id: input.taskId,
+          userId: ctx.userId,
+        },
+      });
+
+      return task;
+    }),
 
   setPriorityTask: privateProcedure
     .input(

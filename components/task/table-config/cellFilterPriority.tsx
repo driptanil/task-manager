@@ -9,15 +9,11 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import {
-  CheckCircle2,
   CheckIcon,
-  Circle,
   MoveDown,
   MoveRight,
   MoveUp,
   PlusCircle,
-  Timer,
-  XCircle,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -30,42 +26,17 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Priority } from "@prisma/client";
+import { priorities } from "@/enums/priorities";
 
 interface CellFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
-  //   options: {
-  //     label: string;
-  //     value: string;
-  //     icon?: React.ComponentType<{ className?: string }>;
-  //   }[];
 }
 
 export function CellFilterPriority<TData, TValue>({
   column,
   title,
 }: CellFilterProps<TData, TValue>) {
-  const options = [
-    {
-      value: Priority.High,
-      label: "High",
-      icon: MoveUp,
-      className: "text-red-500",
-    },
-    {
-      value: Priority.Medium,
-      label: "Medium",
-      icon: MoveRight,
-      className: "",
-    },
-    {
-      value: Priority.Low,
-      label: "Low",
-      icon: MoveDown,
-      className: "text-green-500",
-    },
-  ];
-
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
@@ -92,7 +63,7 @@ export function CellFilterPriority<TData, TValue>({
                     {selectedValues.size} selected
                   </Badge>
                 ) : (
-                  options
+                  priorities
                     .filter((option) => selectedValues.has(option.value))
                     .map((option) => (
                       <Badge
@@ -115,7 +86,7 @@ export function CellFilterPriority<TData, TValue>({
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => {
+              {priorities.map((option) => {
                 const isSelected = selectedValues.has(option.value);
                 return (
                   <CommandItem

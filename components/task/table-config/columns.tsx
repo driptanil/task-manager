@@ -3,11 +3,13 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cellAction";
 import { ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { format } from "date-fns";
 import { RouterOutputs } from "@/app/_trpc/client";
 import { CellPriority } from "./cellPriority";
 import { CellStatus } from "./cellStatus";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -15,23 +17,6 @@ import { CellStatus } from "./cellStatus";
 export type TaskClientColumn = RouterOutputs["getAllTasks"][number];
 
 export const columns: ColumnDef<TaskClientColumn>[] = [
-  {
-    accessorKey: "status",
-    header: ({ column }) => `Status`,
-    cell: ({ row }) => (
-      <CellStatus id={row.original.id} data={row.original.status} />
-    ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: "title",
-    header: ({ column }) => <p>Title</p>,
-    cell: ({ row }) => (
-      <p className="font-semibold text-base">{row.original.title}</p>
-    ),
-  },
   {
     accessorKey: "priority",
     header: ({ column }) => `Priority`,
@@ -43,6 +28,28 @@ export const columns: ColumnDef<TaskClientColumn>[] = [
     },
   },
 
+  {
+    accessorKey: "title",
+    header: ({ column }) => <p>Title</p>,
+    cell: ({ row }) => (
+      <Link
+        href={`/${row.original.id}`}
+        className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+      >
+        {row.original.title}
+      </Link>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => `Status`,
+    cell: ({ row }) => (
+      <CellStatus id={row.original.id} data={row.original.status} />
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
   {
     header: ({ column }) => {
       return (
@@ -58,8 +65,8 @@ export const columns: ColumnDef<TaskClientColumn>[] = [
     accessorKey: "dueDate",
     cell: ({ row }) => format(new Date(row.original.dueDate), "do MMM yyyy"),
   },
-  {
-    id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
-  },
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => <CellAction data={row.original} />,
+  // },
 ];

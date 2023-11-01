@@ -26,52 +26,17 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { Status } from "@prisma/client";
+import { statuses } from "@/enums/statuses";
 
 interface CellFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
-  //   options: {
-  //     label: string;
-  //     value: string;
-  //     icon?: React.ComponentType<{ className?: string }>;
-  //   }[];
 }
 
 export function CellFilterStatus<TData, TValue>({
   column,
   title,
 }: CellFilterProps<TData, TValue>) {
-  const options = [
-    {
-      value: Status.Pending,
-      label: "Pending",
-      icon: Timer,
-      className:
-        "hover:bg-accent text-yellow-800 bg-yellow-300/50 hover:text-yellow-300 dark:text-yellow-200 dark:bg-transparent",
-    },
-    {
-      value: Status.InProgress,
-      label: "InProgress",
-      icon: Circle,
-      className: "hover:bg-accent hover:text-accent-foreground",
-    },
-    {
-      value: Status.Complete,
-      label: "Complete",
-      icon: CheckCircle2,
-      className:
-        "hover:bg-accent hover:text-green-400 bg-green-300/50 dark:bg-transparent text-green-700 dark:text-green-300",
-    },
-    {
-      value: Status.Cancelled,
-      label: "Cancelled",
-      icon: XCircle,
-      className:
-        "hover:bg-accent text-rose-600 hover:text-rose-400 dark:text-rose-400 bg-rose-300/50 dark:bg-transparent",
-    },
-  ];
-
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
@@ -98,7 +63,7 @@ export function CellFilterStatus<TData, TValue>({
                     {selectedValues.size} selected
                   </Badge>
                 ) : (
-                  options
+                  statuses
                     .filter((option) => selectedValues.has(option.value))
                     .map((option) => (
                       <Badge
@@ -121,7 +86,7 @@ export function CellFilterStatus<TData, TValue>({
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => {
+              {statuses.map((option) => {
                 const isSelected = selectedValues.has(option.value);
                 return (
                   <CommandItem
@@ -139,16 +104,6 @@ export function CellFilterStatus<TData, TValue>({
                     }}
                     className="flex gap-4"
                   >
-                    {/* <div
-                      className={cn(
-                        "flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                        isSelected
-                          ? "bg-primary text-background"
-                          : "opacity-50 [&_svg]:invisible"
-                      )}
-                    >
-                      <CheckIcon className={cn("h-3 w-3")} />
-                    </div> */}
                     {isSelected ? (
                       <CheckIcon className="mr-2 h-4 w-4" />
                     ) : (

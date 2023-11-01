@@ -44,6 +44,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { priorities } from "@/enums/priorities";
+import { Textarea } from "../ui/textarea";
 
 const CreateTask = () => {
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
@@ -55,6 +57,9 @@ const CreateTask = () => {
   const formSchema = z.object({
     title: z.string().min(5, {
       message: "Title must be at least 5 characters.",
+    }),
+    description: z.string().max(100, {
+      message: "Title must be at least 100 characters.",
     }),
     dueDate: z.date(),
     priority: z.enum([Priority.Low, Priority.Medium, Priority.High]),
@@ -81,6 +86,7 @@ const CreateTask = () => {
     defaultValues: {
       title: "",
       dueDate: date,
+      description: "",
       priority: Priority.Medium,
     },
   });
@@ -90,6 +96,7 @@ const CreateTask = () => {
     // ✅ This will be type-safe and validated.
     addTask({
       title: values.title,
+      description: values.description,
       dueDate: values.dueDate.toISOString(),
       priority: values.priority,
     });
@@ -119,7 +126,7 @@ const CreateTask = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-full space-y-8"
           >
-            <ScrollArea className="space-4 px-2 py-4 max-h-[50vh]">
+            <ScrollArea className="space-4 px-2 py-4 h-[50vh]">
               <FormField
                 control={form.control}
                 name="title"
@@ -130,6 +137,26 @@ const CreateTask = () => {
                       <Input placeholder="title" {...field} />
                     </FormControl>
                     <FormDescription>This is your task title.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="mb-4">
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder=""
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      This is description of your task.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -197,24 +224,22 @@ const CreateTask = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value={Priority.High}>
-                          <div className="flex">
-                            <MoveUp className="mr-2 h-4 w-4 text-rose-500" />
-                            {Priority.High}
-                          </div>
-                        </SelectItem>
-                        <SelectItem value={Priority.Medium}>
-                          <div className="flex">
-                            <MoveRight className="mr-2 h-4 w-4" />
-                            {Priority.Medium}
-                          </div>
-                        </SelectItem>
-                        <SelectItem value={Priority.Low}>
-                          <div className="flex">
-                            <MoveDown className="mr-2 h-4 w-4 text-green-500" />
-                            {Priority.Low}
-                          </div>
-                        </SelectItem>
+                        {priorities.map((priority) => (
+                          <SelectItem
+                            key={priority.value}
+                            value={priority.value}
+                          >
+                            <div className={"flex"}>
+                              <priority.icon
+                                className={cn(
+                                  priority.className,
+                                  "mr-2 h-4 w-4"
+                                )}
+                              />
+                              {priority.label}
+                            </div>
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormDescription>

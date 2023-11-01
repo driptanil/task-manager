@@ -59,10 +59,11 @@ enum Priority {
 model Task {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  title    String
-  status   Status   @default(Pending)
-  priority Priority @default(Medium)
-  dueDate  DateTime
+  title       String
+  description String?
+  status      Status   @default(Pending)
+  priority    Priority @default(Medium)
+  dueDate     DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

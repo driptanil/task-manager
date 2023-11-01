@@ -12,6 +12,17 @@ import { Button } from "@/components/ui/button";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface CellActionProps {
   data: TaskClientColumn;
@@ -19,35 +30,9 @@ interface CellActionProps {
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
-  const params = useParams();
-
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  // const onDelete = async () => {
-  // 	try {
-  // 		setLoading(true);
-  // 		await axios.delete(
-  // 			`/api/${params?.hospitalId}/qualification/${data.id}`
-  // 		);
-  // 		router.refresh();
-  // 		toast.success("Qualification deleted.");
-  // 	} catch (error: any) {
-  // 		toast.error("Unable to delete Qualification.");
-  // 	} finally {
-  // 		setLoading(false);
-  // 		setOpen(false);
-  // 	}
-  // };
 
   return (
     <>
-      {/* <AlertModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        onConfirm={onDelete}
-        loading={loading}
-      /> */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -57,15 +42,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             onClick={() =>
               router.push(`/${params?.hospitalId}/qualification/${data.id}`)
             }
           >
             <Edit className="mr-2 h-4 w-4" />
             Update
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
+          </DropdownMenuItem> */}
+          <DropdownMenuItem onClick={() => router.push(`/${data.id}`)}>
             <Trash className="mr-2 h-4 w-4" />
             Delete
           </DropdownMenuItem>

@@ -7,12 +7,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { MoveDown, MoveRight, MoveUp } from "lucide-react";
 import { Priority } from "@prisma/client";
 import React from "react";
 import { trpc } from "@/app/_trpc/client";
 import { toast } from "@/components/ui/use-toast";
+import { priorities } from "@/enums/priorities";
+import { cn } from "@/lib/utils";
 
 interface CellPriorityProps {
   id: string;
@@ -22,6 +24,7 @@ interface CellPriorityProps {
 export const CellPriority: React.FC<CellPriorityProps> = ({ id, data }) => {
   const [priority, setPriority] = React.useState<Priority>(data);
 
+  const utils = trpc.useUtils();
   const {
     mutate: updatePriority,
     isLoading,
@@ -30,8 +33,10 @@ export const CellPriority: React.FC<CellPriorityProps> = ({ id, data }) => {
     onSuccess: () => {
       toast({
         title: `Updated: ${priority} Priority`,
-        description: "Task Priority updated to Low",
+        description: `Task Priority updated to ${priority}`,
       });
+      utils.getAllTasks.invalidate();
+      utils.getTask.invalidate({ taskId: id });
     },
     onError: (error) => {
       console.log(error);
@@ -46,73 +51,37 @@ export const CellPriority: React.FC<CellPriorityProps> = ({ id, data }) => {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild className="cursor-pointer">
-          <Button variant="ghost" className="h-8 px-3">
-            {priority === Priority.Low ? (
-              <MoveDown className="h-4 w-4 text-green-400" />
-            ) : priority === Priority.Medium ? (
-              <MoveRight className="h-4 w-4" />
-            ) : (
-              <MoveUp className="h-4 w-4 text-rose-400" />
-            )}
-            <p className="ml-2">{priority}</p>
-          </Button>
+        <DropdownMenuTrigger defaultValue={data}>
+          {priorities
+            .filter((option) => option.value === data)
+            .map((option) => {
+              return (
+                <Button key={option.value} variant={"ghost"}>
+                  <option.icon className={cn(option.className, "h-4 w-4")} />
+                  <p className="ml-2">{option.label}</p>
+                </Button>
+              );
+            })}
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-          {priority !== Priority.Low ? (
-            <DropdownMenuItem
-              onClick={() => {
-                setPriority(Priority.Low);
-                updatePriority({
-                  taskId: id,
-                  priority: Priority.Low,
-                });
-              }}
-            >
-              <Button variant="ghost" className="h-8 px-3">
-                <MoveDown className="h-4 w-4 mr-2 text-green-400" />
-                Low
-              </Button>
-            </DropdownMenuItem>
-          ) : (
-            <></>
-          )}
-          {priority !== Priority.Medium ? (
-            <DropdownMenuItem
-              onClick={() => {
-                setPriority(Priority.Medium);
-                updatePriority({
-                  taskId: id,
-                  priority: Priority.Medium,
-                });
-              }}
-            >
-              <Button variant="ghost" className="h-8 px-3 ">
-                <MoveRight className="h-4 w-4 mr-2" />
-                Medium
-              </Button>
-            </DropdownMenuItem>
-          ) : (
-            <></>
-          )}
-          {priority !== Priority.High ? (
-            <DropdownMenuItem
-              onClick={() => {
-                setPriority(Priority.High);
-                updatePriority({
-                  taskId: id,
-                  priority: Priority.High,
-                });
-              }}
-            >
-              <Button variant="ghost" className="h-8 px-3 ">
-                <MoveUp className="h-4 w-4 mr-2 text-rose-400" />
-                High
-              </Button>
-            </DropdownMenuItem>
-          ) : (
-            <></>
+        <DropdownMenuContent className="flex flex-col">
+          {priorities.map((option) =>
+            priority !== option.value ? (
+              <DropdownMenuItem
+                key={option.value}
+                onClick={() => {
+                  setPriority(option.value);
+                  updatePriority({ taskId: id, priority: option.value });
+                }}
+                className={buttonVariants({
+                  variant: "ghost",
+                })}
+              >
+                <option.icon className={cn(option.className, "h-4 w-4")} />
+                <p className="ml-2">{option.label}</p>
+              </DropdownMenuItem>
+            ) : (
+              <></>
+            )
           )}
         </DropdownMenuContent>
       </DropdownMenu>
