@@ -11,7 +11,7 @@ const Navbar = async () => {
       <div className="items-center flex justify-between max-w-5xl mx-auto">
         <Link
           href="/"
-          className="z-30 p-0 text-lg flex items-center sm:text-xl md:text-2xl font-extrabold"
+          className="z-30 p-0 flex items-center text-lg font-semibold"
         >
           <div className="w-10 h-10 mr-4">
             <Image alt="logo" src="/logo.png" width={100} height={100} />

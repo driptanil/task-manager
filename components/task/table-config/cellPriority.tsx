@@ -53,7 +53,7 @@ export const CellPriority: React.FC<CellPriorityProps> = ({ id, data }) => {
       <DropdownMenu>
         <DropdownMenuTrigger defaultValue={data}>
           {priorities
-            .filter((option) => option.value === data)
+            .filter((option) => option.value === priority)
             .map((option) => {
               return (
                 <Button key={option.value} variant={"ghost"}>

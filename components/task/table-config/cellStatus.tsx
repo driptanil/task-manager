@@ -51,7 +51,7 @@ export const CellStatus: React.FC<CellStatusProps> = ({ id, data }) => {
       <DropdownMenu>
         <DropdownMenuTrigger defaultValue={data}>
           {statuses
-            .filter((option) => option.value === data)
+            .filter((option) => option.value === status)
             .map((option) => {
               return (
                 <Button
