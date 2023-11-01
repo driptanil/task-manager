@@ -1,17 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Task Manager
+
+This is a simple task manager web application with PWA support, build with [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+### [Deployed Link 🖇️]("https://task-manager-driptanil.vercel.app/"):
+
+"https://task-manager-driptanil.vercel.app/"
+
+## Tools Used:
+
+- [Next JS 14]("https://nextjs.org/")
+- [TailwindCSS]("https://tailwindcss.com/")
+- [ShadCN UI]("https://ui.shadcn.com/")
+- [Prisma ORM]("https://www.prisma.io/")
+- [tRPC]("https://trpc.io/")
+- [MongoDB]("https://www.mongodb.com/")
+- [Next Auth]("https://next-auth.js.org/")
 
 ## Getting Started
+
+Add a .env file
+
+```
+DATABASE_URL=""
+NEXTAUTH_SECRET="NEXTAUTH_SECRET"
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+```
+
+Install Command:
+
+```
+npm install
+```
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

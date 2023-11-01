@@ -10,7 +10,6 @@ const AuthButtons = () => {
       <Button
         variant="ghost"
         size="lg"
-        className="hidden sm:block"
         onClick={() => signIn("google", { callbackUrl: "/" })}
       >
         Sign in
@@ -18,7 +17,7 @@ const AuthButtons = () => {
       <Button
         variant="default"
         size="lg"
-        className={"font-medium text-black hidden sm:flex"}
+        className={"font-medium text-black"}
         onClick={() => signIn("google", { callbackUrl: "/" })}
       >
         Get Started
