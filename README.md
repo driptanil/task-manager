@@ -8,13 +8,13 @@ This is a simple task manager web application with PWA support, build with [Next
 
 ## Tools Used:
 
-- [Next JS 14]("https://nextjs.org/")
-- [TailwindCSS]("https://tailwindcss.com/")
-- [ShadCN UI]("https://ui.shadcn.com/")
-- [Prisma ORM]("https://www.prisma.io/")
-- [tRPC]("https://trpc.io/")
-- [MongoDB]("https://www.mongodb.com/")
-- [Next Auth]("https://next-auth.js.org/")
+- Next JS 14: https://nextjs.org/
+- Prisma ORM: https://www.prisma.io/
+- tRPC: https://trpc.io/
+- TailwindCSS: https://tailwindcss.com/
+- ShadCN UI: https://ui.shadcn.com/
+- MongoDB: https://www.mongodb.com/
+- Next Auth: https://next-auth.js.org
 
 ## Getting Started
 
