@@ -50,7 +50,6 @@ import { Textarea } from "../ui/textarea";
 const CreateTask = () => {
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const [date, setDate] = React.useState<Date>(new Date());
-  const [loading, setLoading] = React.useState<boolean>(false);
 
   const utils = trpc.useUtils();
 
@@ -94,6 +93,7 @@ const CreateTask = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+
     addTask({
       title: values.title,
       description: values.description,
@@ -254,7 +254,7 @@ const CreateTask = () => {
               type="submit"
               size={"lg"}
               className="font-semibold hover:opacity-80 transition w-full"
-              disabled={loading}
+              disabled={isAddingSubject}
             >
               Submit
             </Button>

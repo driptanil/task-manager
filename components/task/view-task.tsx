@@ -47,13 +47,13 @@ import { statuses } from "@/enums/statuses";
 import { Textarea } from "../ui/textarea";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import is from "date-fns/locale/is/index.js";
 
 interface IViewTaskProps {
   task: Task;
 }
 
 const ViewTask: React.FC<IViewTaskProps> = ({ task }) => {
-  const [disable, setDisable] = React.useState<boolean>(false);
   const [openDialog, setOpenDialog] = React.useState<boolean>(true);
 
   const utils = trpc.useUtils();
@@ -86,7 +86,6 @@ const ViewTask: React.FC<IViewTaskProps> = ({ task }) => {
       form.reset();
       console.log("SUCCESS");
       setOpenDialog(false);
-      setDisable(true);
       utils.getAllTasks.invalidate();
       utils.getTask.invalidate({ taskId: task.id });
       router.push("/");
@@ -96,7 +95,6 @@ const ViewTask: React.FC<IViewTaskProps> = ({ task }) => {
       });
     },
     onError: (error) => {
-      setDisable(false);
       console.log(error);
       toast({
         title: `Error: Update Task`,
@@ -151,7 +149,7 @@ const ViewTask: React.FC<IViewTaskProps> = ({ task }) => {
               <FormField
                 control={form.control}
                 name="title"
-                disabled={disable}
+                disabled={isAddingSubject}
                 render={({ field }) => (
                   <FormItem className="mb-4">
                     <FormLabel>Title</FormLabel>
@@ -186,7 +184,7 @@ const ViewTask: React.FC<IViewTaskProps> = ({ task }) => {
               <FormField
                 control={form.control}
                 name="dueDate"
-                disabled={disable}
+                disabled={isAddingSubject}
                 render={({ field }) => (
                   <FormItem className="flex flex-col mb-4">
                     <FormLabel>Due Date</FormLabel>
@@ -233,7 +231,7 @@ const ViewTask: React.FC<IViewTaskProps> = ({ task }) => {
                   <FormField
                     control={form.control}
                     name="priority"
-                    disabled={disable}
+                    disabled={isAddingSubject}
                     render={({ field }) => (
                       <FormItem className="mb-4">
                         <FormLabel>Priority</FormLabel>
@@ -277,7 +275,7 @@ const ViewTask: React.FC<IViewTaskProps> = ({ task }) => {
                   <FormField
                     control={form.control}
                     name="status"
-                    disabled={disable}
+                    disabled={isAddingSubject}
                     render={({ field }) => (
                       <FormItem className="mb-4">
                         <FormLabel>Status</FormLabel>
@@ -321,7 +319,7 @@ const ViewTask: React.FC<IViewTaskProps> = ({ task }) => {
               type="submit"
               size={"lg"}
               className="font-semibold hover:opacity-80 transition w-full"
-              disabled={disable}
+              disabled={isAddingSubject}
               //   variant={"secondary"}
               //   disabled={disable}
             >
